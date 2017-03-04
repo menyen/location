@@ -25,11 +25,11 @@ public class LocationEntity {
 		
 	}
 	
-	public LocationEntity(final List<String> names, final List<String> addressess, final GeoJsonPoint location, final Boolean enabled) {
-		this.setNames(names);
-	    this.setAddressess(addressess);
+	public LocationEntity(final List<String> names, final List<String> addressess, final GeoJsonPoint location) {
+		this.names = names;
+	    this.addressess = addressess;
 	    this.location = location;
-	    this.enabled = enabled;
+	    this.enabled = true;
 	}
 	
 	/**
