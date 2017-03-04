@@ -14,7 +14,4 @@ public interface LocationRepository extends MongoRepository<LocationEntity, Stri
 
 	List<LocationEntity> findByLocationNearAndEnabled(Point p, Distance d, Boolean enbled);
 	
-	//List<LocationEntity> findInNames(String name);
-	
-	//Boolean saveEnabled(String id, Boolean enanled);
 }

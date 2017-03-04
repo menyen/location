@@ -6,6 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.geo.GeoJsonModule;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+/**
+ * @author ng
+ * 
+ * Class used to add modules to the spring application
+ *
+ */
 @Configuration
 @ComponentScan(basePackages = "com.neogeo.location")
 public class AppConfig extends WebMvcConfigurerAdapter {

@@ -1,6 +1,7 @@
 package com.neogeo.location.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
@@ -95,5 +96,15 @@ public class LocationEntity {
 	 */
 	public void setAddressess(List<String> addressess) {
 		this.addressess = addressess;
+	}
+	
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) return true;
+		if (o == null || this.getClass() != o.getClass()) return false;
+		final LocationEntity that = (LocationEntity) o;
+		return Objects.equals(this.getAddressess(), that.getAddressess()) &&
+				Objects.equals(this.getNames(), that.getNames()) && 
+				Objects.equals(this.getLocation(), that.getLocation());
 	}
 }
