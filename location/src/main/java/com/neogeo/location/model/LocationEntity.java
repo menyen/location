@@ -1,4 +1,4 @@
-package com.neogeo.location;
+package com.neogeo.location.model;
 
 import java.util.List;
 

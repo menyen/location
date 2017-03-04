@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.neogeo.location.LocationRepository;
+import com.neogeo.location.repository.LocationRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

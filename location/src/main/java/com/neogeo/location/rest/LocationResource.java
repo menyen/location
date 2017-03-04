@@ -1,4 +1,4 @@
-package com.neogeo.location;
+package com.neogeo.location.rest;
 
 import java.util.List;
 
@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.neogeo.location.model.LocationEntity;
+import com.neogeo.location.repository.LocationRepository;
 
 @RestController
 public class LocationResource {
