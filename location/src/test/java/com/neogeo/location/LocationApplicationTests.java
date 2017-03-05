@@ -55,7 +55,8 @@ public class LocationApplicationTests {
 				"{\"addressess\":[\"Avenida Pedro Álvares Cabral\"], "+
 						"\"location\":{\"type\": \"Point\", \"coordinates\": [-23.5874162, -46.6576336]}, "+
 				"\"names\": [\"Parque Ibirapuera\", \"parque\", \"ibirapuera\", \"Pq Ibirapuera\", \"Ibira\"], \"enabled\": true}"))
-		.andExpect(status().isCreated()).andExpect(header().string("Location", containsString("locations/")));
+		.andExpect(status().isCreated())
+		.andExpect(header().string("Location", containsString("locations/")));
 	}
 
 	@Test

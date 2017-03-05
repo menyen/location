@@ -8,6 +8,11 @@ import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * @author ng
+ *
+ * Entity that will be saved in MongoDB
+ */
 @Document(collection = "locations")
 public class LocationEntity {
 	

@@ -9,6 +9,13 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.neogeo.location.model.LocationEntity;
 
+/**
+ * @author ng
+ *
+ * This interface is used to query the database and it will be implemented automatically by Spring boot.
+ * Spring boot is limited to what it can implement. To create methods that Spring cannot implement, 
+ * this interface must extend a custom class
+ */
 @RepositoryRestResource(collectionResourceRel = "locations", path = "locations")
 public interface LocationRepository extends MongoRepository<LocationEntity, String> {
 
