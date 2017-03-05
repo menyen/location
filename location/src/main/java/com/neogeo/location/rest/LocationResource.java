@@ -1,16 +1,11 @@
 package com.neogeo.location.rest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,29 +24,25 @@ public class LocationResource {
 	@Autowired
 	private LocationRepository repository;
 
-	@RequestMapping(value = "locations/search/findByLocationNearAndEnabled", method = RequestMethod.GET)
+	@RequestMapping(value = "locations/search/findByLocationNear", method = RequestMethod.GET)
 	public List<LocationEntity> getLocationsByProximity(
 			@RequestParam("latitude") String latitude,
 			@RequestParam("longitude") String longitude,
 			@RequestParam("distance") Double distance) {
 
-		List<LocationEntity> result = this.repository.findByLocationNearAndEnabled(
+		List<LocationEntity> result = this.repository.findByLocationNearAndEnabledIsTrue(
 				new Point(Double.valueOf(longitude), Double.valueOf(latitude)),
-				new Distance(distance, Metrics.KILOMETERS), true);
+				new Distance(distance, Metrics.KILOMETERS));
 
 		return result;
 	}
 	
-	@RequestMapping(value = "locations/search/findByLocationName", method = RequestMethod.GET)
-	public List<LocationEntity> getLocationsByName(@RequestParam("name")String name){
-		List<LocationEntity> result = null;
-		/*ExampleMatcher matcher = ExampleMatcher.matching()
-			    .withMatcher("names", );*/
-		
-		LocationEntity locationEntity = new LocationEntity();
-		locationEntity.setNames(new ArrayList<String>(Arrays.asList(name)));
-		Example<LocationEntity> example = Example.of(locationEntity);
-		result = this.repository.findAll(example);
+	@RequestMapping(value = "locations/search/findByName", method = RequestMethod.GET)
+	public List<LocationEntity> getLocationsByName(
+			@RequestParam("name") List<String> name) {
+
+		List<LocationEntity> result = this.repository.findByNamesInAndEnabledIsTrue(name);
+
 		return result;
 	}
 	

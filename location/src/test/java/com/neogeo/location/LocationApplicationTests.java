@@ -11,8 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
-
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +44,8 @@ public class LocationApplicationTests {
 	@Test
 	public void shouldReturnRepositoryIndex() throws Exception {
 
-		mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk()).andExpect(
-				jsonPath("$._links.locations").exists());
+		mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
+		.andExpect(jsonPath("$._links.locations").exists());
 	}
 
 	@Test
@@ -70,17 +68,17 @@ public class LocationApplicationTests {
 				.andExpect(status().isCreated()).andReturn();
 
 		String location = mvcResult.getResponse().getHeader("Location").replace("http://localhost", "");
-		mockMvc.perform(get(location)).andExpect(status().isOk()).andExpect(
-				jsonPath("$.addressess").value("Avenida Pedro Álvares Cabral")).andExpect(
-						jsonPath("$.location.type").value("Point")).andExpect(
-								jsonPath("$.location.x").value(-23.5874162)).andExpect(
-										jsonPath("$.location.y").value(-46.6576336)).andExpect(
-												jsonPath("$.names").value(Matchers.containsInAnyOrder("Parque Ibirapuera", "parque", "ibirapuera", "Pq Ibirapuera", "Ibira"))).andExpect(
-														jsonPath("$.enabled").value(true));
+		mockMvc.perform(get(location)).andExpect(status().isOk())
+		.andExpect(jsonPath("$.addressess").value("Avenida Pedro Álvares Cabral"))
+		.andExpect(jsonPath("$.location.type").value("Point"))
+		.andExpect(jsonPath("$.location.x").value(-23.5874162))
+		.andExpect(jsonPath("$.location.y").value(-46.6576336))
+		.andExpect(jsonPath("$.names").value(Matchers.containsInAnyOrder("Parque Ibirapuera", "parque", "ibirapuera", "Pq Ibirapuera", "Ibira")))
+		.andExpect(jsonPath("$.enabled").value(true));
 	}
 
 	@Test
-	public void shouldQueryEntity() throws Exception {
+	public void shouldQueryEntityByProximity() throws Exception {
 
 		mockMvc.perform(post("/locations").content(
 				"{\"addressess\":[\"Avenida Pedro Álvares Cabral\"], "+
@@ -89,9 +87,24 @@ public class LocationApplicationTests {
 		.andExpect(status().isCreated());
 
 		mockMvc.perform(
-				get("/locations/search/findByLocationNearAndEnabled?latitude={latitude}&longitude={longitude}&distance={distance}", -46.6576336, -23.5874162, 1)).andExpect(
-						status().isOk()).andExpect(
-								jsonPath("$.[0].addressess").value("Avenida Pedro Álvares Cabral"));
+				get("/locations/search/findByLocationNearAndEnabled?latitude={latitude}&longitude={longitude}&distance={distance}", -46.6576336, -23.5874162, 1))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.[0].addressess").value("Avenida Pedro Álvares Cabral"));
+	}
+	
+	@Test
+	public void shouldQueryEntityByName() throws Exception {
+
+		mockMvc.perform(post("/locations").content(
+				"{\"addressess\":[\"Avenida Pedro Álvares Cabral\"], "+
+						"\"location\":{\"type\": \"Point\", \"coordinates\": [-23.5874162, -46.6576336]}, "+
+				"\"names\": [\"Parque Ibirapuera\", \"parque\", \"ibirapuera\", \"Pq Ibirapuera\", \"Ibira\"], \"enabled\": true}"))
+		.andExpect(status().isCreated());
+
+		mockMvc.perform(
+				get("/locations/search/findByName?name={name}", "Ibira"))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.[0].addressess").value("Avenida Pedro Álvares Cabral"));
 	}
 
 	@Test
@@ -126,14 +139,12 @@ public class LocationApplicationTests {
 
 		String location = mvcResult.getResponse().getHeader("Location").replace("http://localhost", "");
 
-		mockMvc.perform(
-				patch(location).contentType(MediaType.APPLICATION_JSON).content(
-						"{\"addressess\": [\"Av Pedro Álvares Cabral\"]}"))
-		.andExpect(
-				status().isNoContent());
+		mockMvc.perform(patch(location).contentType(MediaType.APPLICATION_JSON)
+				.content("{\"addressess\": [\"Av Pedro Álvares Cabral\"]}"))
+		.andExpect(status().isNoContent());
 
-		mockMvc.perform(get(location)).andExpect(status().isOk()).andExpect(
-				jsonPath("$.addressess").value("Av Pedro Álvares Cabral"));
+		mockMvc.perform(get(location)).andExpect(status().isOk())
+		.andExpect(jsonPath("$.addressess").value("Av Pedro Álvares Cabral"));
 	}
 	
 
@@ -150,7 +161,7 @@ public class LocationApplicationTests {
 		
 		mockMvc.perform(delete(location)).andExpect(status().isNoContent());
 
-		mockMvc.perform(get(location)).andExpect(status().isOk()).andExpect(
-				jsonPath("$.enabled").value(false));
+		mockMvc.perform(get(location)).andExpect(status().isOk())
+		.andExpect(jsonPath("$.enabled").value(false));
 	}
 }

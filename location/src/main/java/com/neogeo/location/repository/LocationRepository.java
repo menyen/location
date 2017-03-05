@@ -12,6 +12,7 @@ import com.neogeo.location.model.LocationEntity;
 @RepositoryRestResource(collectionResourceRel = "locations", path = "locations")
 public interface LocationRepository extends MongoRepository<LocationEntity, String> {
 
-	List<LocationEntity> findByLocationNearAndEnabled(Point p, Distance d, Boolean enbled);
+	List<LocationEntity> findByLocationNearAndEnabledIsTrue(Point p, Distance d);
 	
+	List<LocationEntity> findByNamesInAndEnabledIsTrue(List<String> names);
 }
