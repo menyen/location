@@ -1,6 +1,7 @@
 package com.neogeo.location.rest;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
@@ -42,30 +43,20 @@ public class LocationResource {
 	 * @param distance
 	 * @return list o locations near a point
 	 */
-	@RequestMapping(value = "locations/search/findByLocationNear", method = RequestMethod.GET)
+	@RequestMapping(value = "locations/search/findByNameAndLocationNear", method = RequestMethod.GET)
 	public List<LocationEntity> getLocationsByProximity(
+			@RequestParam("name") String name,
 			@RequestParam("latitude") String latitude,
 			@RequestParam("longitude") String longitude,
 			@RequestParam("distance") Double distance) {
 
-		List<LocationEntity> result = this.repository.findByLocationNearAndEnabledIsTrue(
+		for (Map.Entry<String, String> entry : LocationEntity.NAMES_MAP.entrySet()) {
+			name = name.replace(entry.getKey(), entry.getValue());
+	    }
+		List<LocationEntity> result = this.repository.findByNameAndLocationNearAndEnabledIsTrue(
+				name,
 				new Point(Double.valueOf(longitude), Double.valueOf(latitude)),
 				new Distance(distance, Metrics.KILOMETERS));
-
-		return result;
-	}
-	
-	/**
-	 * Find locations that matches given param name
-	 * 
-	 * @param name
-	 * @return list of locations matching param name
-	 */
-	@RequestMapping(value = "locations/search/findByName", method = RequestMethod.GET)
-	public List<LocationEntity> getLocationsByName(
-			@RequestParam("name") List<String> name) {
-
-		List<LocationEntity> result = this.repository.findByNamesInAndEnabledIsTrue(name);
 
 		return result;
 	}
@@ -105,10 +96,10 @@ public class LocationResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void setLocation(@PathVariable("id") String id, @RequestBody LocationEntity newLoc){
 		LocationEntity oldLoc = this.repository.findOne(id);
-		oldLoc.setAddressess(newLoc.getAddressess());
+		oldLoc.setAddress(newLoc.getAddress());
 		oldLoc.setEnabled(newLoc.getEnabled());
 		oldLoc.setLocation(newLoc.getLocation());
-		oldLoc.setNames(newLoc.getNames());
+		oldLoc.setName(newLoc.getName());
 		this.repository.save(oldLoc);
 	}
 	
@@ -122,10 +113,10 @@ public class LocationResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void setLocationAttribute(@PathVariable("id") String id, @RequestBody LocationEntity newLoc){
 		LocationEntity oldLoc = this.repository.findOne(id);
-		oldLoc.setAddressess(newLoc.getAddressess() != null ? newLoc.getAddressess() : oldLoc.getAddressess());
+		oldLoc.setAddress(newLoc.getAddress() != null ? newLoc.getAddress() : oldLoc.getAddress());
 		oldLoc.setEnabled(newLoc.getEnabled() != null ? newLoc.getEnabled() : oldLoc.getEnabled());
 		oldLoc.setLocation(newLoc.getLocation() != null ? newLoc.getLocation() : oldLoc.getLocation());
-		oldLoc.setNames(newLoc.getNames() != null ? newLoc.getNames() : oldLoc.getNames());
+		oldLoc.setName(newLoc.getName() != null ? newLoc.getName() : oldLoc.getName());
 		this.repository.save(oldLoc);
 	}
 	
