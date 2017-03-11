@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.geo.GeoJsonModule;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.neogeo.location.service.LocationService;
+import com.neogeo.location.service.LocationServiceImpl;
+
 /**
  * @author ng
  * 
@@ -22,5 +25,13 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     public GeoJsonModule geoJsonModule(){
         return new GeoJsonModule();
     }
+	
+	/**
+	 * @return LocationService which will communicate with repository
+	 */
+	@Bean
+	public LocationService locationService(){
+		return new LocationServiceImpl();
+	}
 
 }
